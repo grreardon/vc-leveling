@@ -1,0 +1,5 @@
+{
+    "token": "your-bot-token",
+    "prefix": "your-prefix",
+    "db": "your-mongodb-url"
+}
