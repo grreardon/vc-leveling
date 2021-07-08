@@ -1,5 +1,10 @@
 {
     "token": "your-bot-token",
     "prefix": "your-prefix",
-    "db": "your-mongodb-url"
+    "db": "your-mongodb-url",
+    "levels": {
+        "1": "role-id for level one",
+        "5": "role-id for level 5"
+    },
+    "guildID": "the guild id of the guild the bot is going to be in"
 }

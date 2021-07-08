@@ -1,5 +1,5 @@
 const { Client } = require("eris")
-const { token, prefix, db } = require("./config.json")
+const { token, prefix, db, levels, guildID } = require("./config.json")
 const redis = require("ioredis")
 const mongoose = require("mongoose")
 
@@ -33,6 +33,7 @@ const client = new Client(token, {
   },
   intents: ["guildVoiceStates", "guildMessages", "guilds"],
   messageLimit: 0,
+  restMode: true,
 })
 mongoose
   .connect(db, {
@@ -95,6 +96,7 @@ client.on("voiceChannelLeave", member => {
 })
 
 client.on("voiceStateUpdate", (member, oldState) => {
+  console.log(oldState)
   //prettier-ignore
   if(oldState.deaf || oldState.mute || oldState.selfMute || oldState.selfDeaf) {
         inVc.add(member.id)
@@ -143,7 +145,6 @@ const getUser = async user => {
     }
   })
 }
-
 const updateUser = async (user, data) => {
   schema
     .findOneAndUpdate(
@@ -182,6 +183,17 @@ const updateExp = async user => {
     updateUser(user, {
       level: 1,
     })
+
+    if (levels[data.level + 1]) {
+      try {
+        const guild = await client.guilds.get(guildID)
+        ;(guild.members.get(user) || (await guild.getRESTMember(user))).addRole(
+          levels[data.level + 1]
+        )
+      } catch {
+        //errors dont matter in 2021
+      }
+    }
   } else {
     //prettier-ignore
     cache.set(user, JSON.stringify({
@@ -193,6 +205,7 @@ const updateExp = async user => {
 
 setInterval(() => {
   for (let user of inVc) {
+    console.log(user)
     updateExp(user)
   }
 }, 60000)
