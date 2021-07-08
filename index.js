@@ -96,7 +96,6 @@ client.on("voiceChannelLeave", member => {
 })
 
 client.on("voiceStateUpdate", (member, oldState) => {
-  console.log(oldState)
   //prettier-ignore
   if(oldState.deaf || oldState.mute || oldState.selfMute || oldState.selfDeaf) {
         inVc.add(member.id)
@@ -205,7 +204,6 @@ const updateExp = async user => {
 
 setInterval(() => {
   for (let user of inVc) {
-    console.log(user)
     updateExp(user)
   }
 }, 60000)
