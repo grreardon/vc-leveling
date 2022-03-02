@@ -117,6 +117,7 @@ const createUser = async user => {
     .set(
       user,
       JSON.stringify({
+        _id: user,
         level: 0,
         exp: 0,
       })
@@ -132,6 +133,7 @@ const getUser = async user => {
       if (!fromDB.length) {
         createUser(user)
         resolve({
+          _id: user,
           level: 0,
           exp: 0,
         })
@@ -152,6 +154,9 @@ const updateUser = async (user, data) => {
       },
       {
         $inc: data,
+        $set: {
+          exp: 0
+          }
       },
       {
         upsert: true,
@@ -178,7 +183,7 @@ const updateExp = async user => {
   const data = await getUser(user)
   const randomAmount = Math.round(Math.random() * 16) + 10
   const amt = data.exp + randomAmount
-  if (amt > 5 * (data.level ^ 2) + 50 * data.level + 100 - data.exp) {
+  if (amt > 5 * (data.level ** 2) + 50 * data.level + 100 - data.exp) {
     updateUser(user, {
       level: 1,
     })
