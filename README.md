@@ -1,2 +1,1 @@
-# vc-leveling
-self-hostable, will add things to here when I feel like it
+Discord Bot created in 2021 to achieve the functionality of a leveling system through being in a voice channel. 
